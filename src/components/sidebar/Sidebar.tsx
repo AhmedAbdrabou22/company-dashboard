@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 // ─── Icons (inline SVG to avoid dependencies) ───────────────────────────────
@@ -18,6 +18,11 @@ const ServicesIcon = () => (
     <path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z" />
   </svg>
 );
+const CloseIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+  </svg>
+);
 const TicketsIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
     <path d="M22 10V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-2-3.46V6h16v2.54z" />
@@ -30,7 +35,9 @@ const LocationIcon = () => (
 );
 const CategoriesIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2l-5.5 9h11z" /><circle cx="17.5" cy="17.5" r="4.5" /><rect x="3" y="13" width="8" height="8" />
+    <path d="M12 2l-5.5 9h11z" />
+    <circle cx="17.5" cy="17.5" r="4.5" />
+    <rect x="3" y="13" width="8" height="8" />
   </svg>
 );
 const IssuesIcon = () => (
@@ -104,7 +111,8 @@ type NavItem = {
 const superAdminNav: NavItem[] = [
   { label: "Home", path: "/", icon: <HomeIcon /> },
   {
-    label: "Users", icon: <UsersIcon />,
+    label: "Users",
+    icon: <UsersIcon />,
     children: [
       { label: "Management", path: "/users/management" },
       { label: "Service Provider", path: "/users/service-provider" },
@@ -114,7 +122,8 @@ const superAdminNav: NavItem[] = [
   { label: "Services", path: "/services", icon: <ServicesIcon /> },
   { label: "Tickets", path: "/tickets", icon: <TicketsIcon /> },
   {
-    label: "Cities & Areas", icon: <LocationIcon />,
+    label: "Cities & Areas",
+    icon: <LocationIcon />,
     children: [
       { label: "Countries", path: "/cities/countries" },
       { label: "Cities", path: "/cities/cities" },
@@ -157,19 +166,21 @@ const buildingOwnerNav: NavItem[] = [
 const SidebarNavItem = ({
   item,
   onLogout,
+  onNavigate, // ← جديد: يُغلق الـ drawer على mobile
 }: {
   item: NavItem;
   onLogout?: () => void;
+  onNavigate?: () => void;
 }) => {
   const location = useLocation();
-  const [open, setOpen] = useState(() =>
-    item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false
+  const [open, setOpen] = useState(
+    () =>
+      item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false,
   );
 
   const isParentActive =
     item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false;
 
-  // Item with children (accordion)
   if (item.children) {
     return (
       <div>
@@ -178,14 +189,21 @@ const SidebarNavItem = ({
           className={`
             w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg
             text-sm font-medium transition-all duration-200 group
-            ${isParentActive
-              ? "bg-[#1B2B4B] text-white"
-              : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1B2B4B]"
+            ${
+              isParentActive
+                ? "bg-[#1B2B4B] text-white"
+                : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1B2B4B]"
             }
           `}
         >
           <div className="flex items-center gap-3">
-            <span className={isParentActive ? "text-white" : "text-[#94a3b8] group-hover:text-[#1B2B4B]"}>
+            <span
+              className={
+                isParentActive
+                  ? "text-white"
+                  : "text-[#94a3b8] group-hover:text-[#1B2B4B]"
+              }
+            >
               {item.icon}
             </span>
             <span>{item.label}</span>
@@ -197,11 +215,8 @@ const SidebarNavItem = ({
           </span>
         </button>
 
-        {/* Sub-items */}
         <div
-          className={`overflow-hidden transition-all duration-300 ${
-            open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
-          }`}
+          className={`overflow-hidden transition-all duration-300 ${open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}`}
         >
           <div className="ml-4 mt-1 space-y-1 border-l-2 border-[#e2e8f0] pl-4">
             {item.children.map((child) => {
@@ -210,13 +225,11 @@ const SidebarNavItem = ({
                 <NavLink
                   key={child.path}
                   to={child.path}
+                  onClick={onNavigate} // ← يُغلق الـ drawer
                   className={`
                     flex items-center gap-2 px-3 py-2 rounded-md text-sm
                     transition-colors duration-150
-                    ${isActive
-                      ? "text-[#e53935] font-semibold"
-                      : "text-[#64748b] hover:text-[#1B2B4B]"
-                    }
+                    ${isActive ? "text-[#e53935] font-semibold" : "text-[#64748b] hover:text-[#1B2B4B]"}
                   `}
                 >
                   <ChevronRight />
@@ -230,7 +243,6 @@ const SidebarNavItem = ({
     );
   }
 
-  // Logout button
   if (item.isLogout) {
     return (
       <button
@@ -247,23 +259,30 @@ const SidebarNavItem = ({
     );
   }
 
-  // Regular link
   return (
     <NavLink
       to={item.path!}
-      end={item.path === "/"}
+      end={item.path === "/" || item.path?.endsWith("/dashboard")}
+      onClick={onNavigate} // ← يُغلق الـ drawer
       className={({ isActive }) => `
         flex items-center gap-3 px-4 py-3 rounded-lg
         text-sm font-medium transition-all duration-200 group
-        ${isActive
-          ? "bg-[#1B2B4B] text-white"
-          : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1B2B4B]"
+        ${
+          isActive
+            ? "bg-[#1B2B4B] text-white"
+            : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1B2B4B]"
         }
       `}
     >
       {({ isActive }) => (
         <>
-          <span className={isActive ? "text-white" : "text-[#94a3b8] group-hover:text-[#1B2B4B]"}>
+          <span
+            className={
+              isActive
+                ? "text-white"
+                : "text-[#94a3b8] group-hover:text-[#1B2B4B]"
+            }
+          >
             {item.icon}
           </span>
           {item.label}
@@ -282,6 +301,8 @@ interface SidebarProps {
   onLogout?: () => void;
   companyName?: string;
   logoSrc?: string;
+   isOpen: boolean;
+  onClose: () => void;
 }
 
 const navByRole: Record<SidebarRole, NavItem[]> = {
@@ -290,37 +311,48 @@ const navByRole: Record<SidebarRole, NavItem[]> = {
   buildingOwner: buildingOwnerNav,
 };
 
+
 export const Sidebar = ({
   role = "superAdmin",
   onLogout,
   companyName = "COMPANY",
   logoSrc,
+  isOpen,
+  onClose,
 }: SidebarProps) => {
   const navItems = navByRole[role];
 
-  return (
-    <aside
-      className="
-        w-[240px] h-screen bg-white border-r border-[#e2e8f0]
-        flex flex-col overflow-hidden flex-shrink-0
-      "
-    >
+  // إغلاق الـ drawer لما يتضغط Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  // منع scroll الـ body لما الـ drawer مفتوح على mobile
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
+  const sidebarContent = (
+    <aside className="w-[240px] h-full bg-white border-r border-[#e2e8f0] flex flex-col overflow-hidden flex-shrink-0">
       {/* ── Logo ── */}
-      <div className="px-5 py-5 border-b border-[#e2e8f0]">
+      <div className="px-5 py-5 border-b border-[#e2e8f0] flex items-center justify-between">
         <div className="flex items-center gap-2">
           {logoSrc ? (
             <img src={logoSrc} alt="logo" className="h-10 w-auto" />
           ) : (
-            // Default logo matching the PDF design
             <div className="flex items-center gap-2">
               <svg width="48" height="36" viewBox="0 0 48 36" fill="none">
-                <path
-                  d="M6 28 C6 28, 14 8, 22 18 C26 24, 30 12, 38 6"
-                  stroke="#1B2B4B"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  fill="none"
-                />
+                <path d="M6 28 C6 28, 14 8, 22 18 C26 24, 30 12, 38 6"
+                  stroke="#1B2B4B" strokeWidth="3" strokeLinecap="round" fill="none" />
                 <circle cx="8" cy="28" r="3" fill="#1B2B4B" />
               </svg>
               <span className="text-[#1B2B4B] font-bold text-sm tracking-widest uppercase">
@@ -329,40 +361,71 @@ export const Sidebar = ({
             </div>
           )}
         </div>
+
+        {/* زر الإغلاق — يظهر فقط على mobile */}
+        <button
+          onClick={onClose}
+          className="lg:hidden p-1.5 rounded-md text-[#94a3b8] hover:text-[#1B2B4B] hover:bg-[#f1f5f9] transition-colors"
+          aria-label="Close sidebar"
+        >
+          <CloseIcon />
+        </button>
       </div>
 
       {/* ── Navigation ── */}
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
         {navItems.map((item, index) => {
-          // Divider before Log Out
           const isLast = index === navItems.length - 1;
           return (
             <div key={item.label}>
-              {isLast && (
-                <div className="border-t border-[#e2e8f0] my-3" />
-              )}
-              <SidebarNavItem item={item} onLogout={onLogout} />
+              {isLast && <div className="border-t border-[#e2e8f0] my-3" />}
+              <SidebarNavItem
+                item={item}
+                onLogout={onLogout}
+                onNavigate={onClose}    // ← يُغلق الـ drawer عند الانتقال
+              />
             </div>
           );
         })}
       </nav>
     </aside>
   );
+
+  return (
+    <>
+      {/* ── Desktop: ثابتة ── */}
+      <div className="hidden lg:block h-screen">
+        {sidebarContent}
+      </div>
+
+      {/* ── Mobile/Tablet: Drawer ── */}
+      {/* Overlay */}
+      <div
+        onClick={onClose}
+        className={`
+          lg:hidden fixed inset-0 bg-black/40 z-40
+          transition-opacity duration-300
+          ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        `}
+        aria-hidden="true"
+      />
+
+      {/* Drawer */}
+      <div
+        className={`
+          lg:hidden fixed top-0 left-0 h-full z-50
+          transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        {sidebarContent}
+      </div>
+    </>
+  );
 };
 
-// ─── Root Layout using Sidebar ────────────────────────────────────────────────
 
-/**
- * RootLayout — wraps all authenticated pages.
- * Drop <Outlet /> inside for React Router v6.
- *
- * Usage in your router:
- *
- * <Route path="/" element={<RootLayout role="superAdmin" />}>
- *   <Route index element={<Dashboard />} />
- *   ...
- * </Route>
- */
+
 export const RootLayout = ({
   role = "superAdmin",
   onLogout,
@@ -388,11 +451,24 @@ export const RootLayout = ({
           <div className="flex items-center gap-4">
             {/* Lang toggle */}
             <button className="flex items-center gap-1 px-3 py-1.5 rounded-md border border-[#e2e8f0] text-sm text-[#1B2B4B] hover:bg-[#f8fafc]">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#1B2B4B]">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="text-[#1B2B4B]"
+              >
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
               </svg>
               Ar
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M7 10l5 5 5-5z" />
+              </svg>
             </button>
 
             {/* User avatar */}
@@ -401,7 +477,9 @@ export const RootLayout = ({
                 A
               </div>
               <div className="hidden md:block">
-                <p className="text-sm font-medium text-[#1B2B4B]">Ahmed Mohamed</p>
+                <p className="text-sm font-medium text-[#1B2B4B]">
+                  Ahmed Mohamed
+                </p>
                 <p className="text-xs text-[#94a3b8]">Admin</p>
               </div>
             </div>
