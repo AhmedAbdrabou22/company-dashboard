@@ -12,6 +12,8 @@ import AdminNewPassword from "../pages/superAdmin/Auth/AdminNewPassword";
 import Users from "../pages/superAdmin/users/index";
 import ServiceProvider from "../pages/superAdmin/serviceprovider";
 import { AddServiceProviderForm } from "../components/superadmin/serviceprovider/AddUserForm";
+import Owners from "../pages/superAdmin/owners";
+import Services from "../pages/superAdmin/services";
 
 const AppRouter = () => {
   const { logout } = useAuth();
@@ -39,8 +41,8 @@ const AppRouter = () => {
           <Route path="users/service-provider/add" element={
             <AddServiceProviderForm/>  
           } />
-          <Route path="users/building-owners" element={<div className="p-4 text-xl">Building Owners</div>} />
-          <Route path="services" element={<div className="p-4 text-xl">Services</div>} />
+          <Route path="users/building-owners" element={<Owners title="Building Owners"/>} />
+          <Route path="services" element={<Services title="Services"/>} />
           <Route path="tickets" element={<div className="p-4 text-xl">Tickets</div>} />
           <Route path="cities/countries" element={<div className="p-4 text-xl">Countries</div>} />
           <Route path="cities/cities" element={<div className="p-4 text-xl">Cities</div>} />

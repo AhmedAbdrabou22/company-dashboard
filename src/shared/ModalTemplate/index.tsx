@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-
+import type { IconType } from "react-icons";
 type ModalTemplateProps_TP = {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
     subtitle?: string;
     children: ReactNode;
+    Icon?: IconType;
 };
 
 export const ModalTemplate = ({
@@ -15,6 +16,7 @@ export const ModalTemplate = ({
     title,
     subtitle,
     children,
+    Icon,
 }: ModalTemplateProps_TP) => {
 
     useEffect(() => {
@@ -35,7 +37,10 @@ export const ModalTemplate = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center">
+        <div className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center"
+            style={{ fontFamily: "Inter, sans-serif" }}
+
+        >
 
             {/* Overlay */}
             <div
@@ -53,23 +58,13 @@ export const ModalTemplate = ({
                 max-h-[92dvh] sm:max-h-[90vh]
                 transition-all duration-300
             ">
-                {/* Header — fixed داخل الـ modal */}
                 {(title || subtitle) && (
                     <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-gray-100 shrink-0">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                                <svg
-                                    className="w-5 h-5 text-gray-600"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth={1.8}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                    <circle cx="12" cy="7" r="4" />
-                                </svg>
+                            <div className="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center shrink-0">
+                                {Icon && (
+                                    <Icon size={20} color="#1A2A4B" />
+                                )}
                             </div>
                             <div>
                                 {title && (

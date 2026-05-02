@@ -41,7 +41,7 @@ const SectionLabel = ({ label, required }: { label: string; required?: boolean }
     </p>
 );
 
-const Divider = () => <div className="h-px bg-gray-100" />;
+export const Divider = () => <div className="h-px bg-gray-100" />;
 
 export const AddServiceProviderForm = () => {
     const handleSubmit = async (values: AddServiceProviderFormValues) => {

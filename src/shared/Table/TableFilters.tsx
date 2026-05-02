@@ -37,14 +37,20 @@ export const TableFilters = ({
 
     return (
         <div
-            className={`flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 px-4 py-3 rounded-xl ${className}`}
+            className={`flex flex-col sm:flex-row sm:items-center gap-3 px-3 py-3 rounded-xl ${className}`}
             style={{
                 background: "#FFFFFF",
-                border: "0.93px solid #F3F0F7",
+                
             }}
         >
-            {/* Search — full width على موبايل */}
-            <div className="flex items-center flex-1 gap-2">
+            {/* SEARCH BOX */}
+            <div
+                className="flex items-center flex-1 gap-2 px-3 py-2 rounded-lg"
+                style={{
+                    border: "0.93px solid #F3F0F7",
+                    background: "#fff",
+                }}
+            >
                 <svg
                     className="w-4 h-4 shrink-0 text-gray-400"
                     viewBox="0 0 24 24"
@@ -57,6 +63,7 @@ export const TableFilters = ({
                     <circle cx="11" cy="11" r="8" />
                     <path d="m21 21-4.35-4.35" />
                 </svg>
+
                 <input
                     type="text"
                     value={search}
@@ -66,18 +73,23 @@ export const TableFilters = ({
                 />
             </div>
 
-            {/* Divider — أفقي على موبايل، عمودي على desktop */}
-            <div className="h-px w-full sm:h-5 sm:w-px bg-gray-200 shrink-0" />
-
-            {/* Sort By — full width على موبايل */}
-            <div className="relative w-full sm:w-auto">
+            {/* SORT BOX */}
+            <div
+                className="relative w-full sm:w-auto px-3 py-2 rounded-lg"
+                style={{
+                    border: "0.93px solid #F3F0F7",
+                    background: "#fff",
+                }}
+            >
                 <button
                     onClick={() => setSortOpen((prev) => !prev)}
                     className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
                 >
                     <span>{selectedSort ? selectedSort.label : "Sort By"}</span>
+
                     <svg
-                        className={`w-4 h-4 transition-transform duration-200 ${sortOpen ? "rotate-180" : ""}`}
+                        className={`w-4 h-4 transition-transform duration-200 ${sortOpen ? "rotate-180" : ""
+                            }`}
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"

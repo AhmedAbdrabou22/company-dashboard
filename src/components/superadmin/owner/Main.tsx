@@ -6,7 +6,6 @@ import { TableFilters } from "../../../shared/Table/TableFilters";
 import { TableFooter } from "../../../shared/Table/TableFooter";
 import { AddUserForm } from "./AddUserForm";
 import { PageHeader } from "../../../shared/headers/PageHeader";
-import { HiOutlineUser } from "react-icons/hi2";
 
 
 type User = {
@@ -63,7 +62,7 @@ const COLUMNS: Column<User>[] = [
     },
 ];
 
-function MainUsers() {
+function MainOwners() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dense, setDense] = useState(false);
     const [page, setPage] = useState(1);
@@ -114,12 +113,12 @@ function MainUsers() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4">
                 <PageHeader
-                    breadcrumb="Dashboard / Users / Management"
-                    title="Management"
+                    breadcrumb="Dashboard / Users / Building Owners"
+                    title="Building Owners"
                 />
                 <AddButton
                     action={() => setIsModalOpen(true)}
-                    addLabel="Add New Management User"
+                    addLabel="Add New Building Owner"
                     className="w-full sm:w-auto"
                 />
             </div>
@@ -157,7 +156,6 @@ function MainUsers() {
                 onClose={() => setIsModalOpen(false)}
                 title="Add New User"
                 subtitle="Add employee and give him/her permissions"
-                Icon={HiOutlineUser}
             >
                 <AddUserForm
                     onClose={() => setIsModalOpen(false)}
@@ -167,4 +165,4 @@ function MainUsers() {
     );
 }
 
-export default MainUsers;
+export default MainOwners;
