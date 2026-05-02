@@ -78,6 +78,7 @@ import AdminLogin from "../pages/superAdmin/Auth/AdminLogin";
 import AdminForgot from "../pages/superAdmin/Auth/AdminForgot";
 import AdminVerifyOtp from "../pages/superAdmin/Auth/AdminVerifyOtp";
 import AdminNewPassword from "../pages/superAdmin/Auth/AdminNewPassword";
+import Users from "../pages/superAdmin/users/index";
 
 const AppRouter = () => {
   const { logout } = useAuth();
@@ -96,7 +97,9 @@ const AppRouter = () => {
 
         <Route path="/admin" element={<RootLayout role="superAdmin" onLogout={logout} />}>
           <Route index element={<SuperAdminDashboard  title="Dashboard"/>} />
-          <Route path="users/management" element={<div className="p-4 text-xl">Management</div>} />
+          <Route path="users/management" element={
+            <Users title="User Management" />
+          } />
           <Route path="users/service-provider" element={<div className="p-4 text-xl">Service Provider</div>} />
           <Route path="users/building-owners" element={<div className="p-4 text-xl">Building Owners</div>} />
           <Route path="services" element={<div className="p-4 text-xl">Services</div>} />
