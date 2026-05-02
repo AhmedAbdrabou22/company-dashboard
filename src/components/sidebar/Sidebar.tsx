@@ -307,7 +307,7 @@ const SidebarNavItem = ({
   return (
     <NavLink
       to={item.path!}
-      end={item.path === "/" || item.path?.endsWith("/dashboard")}
+      end={item.path === "/admin"}
       onClick={onNavigate}
       className={({ isActive }) => isActive ? "nav-active" : ""}
       style={({ isActive }) => ({

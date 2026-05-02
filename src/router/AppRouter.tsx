@@ -1,72 +1,3 @@
-// import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
-// import { RootLayout } from "../layouts/RootLayout";
-// import AuthLayout from "../layouts/AuthLayout";
-// import LoginPage from "../pages/auth/LoginPage";
-// import SuperAdminDashboard from "../pages/superAdmin/Dashboard";
-// import SpDashboard from "../pages/serviceProvider/Dashboard";
-// import BoDashboard from "../pages/buildingOwner/Dashboard";
-
-// const AppRouter = () => {
-//   const { logout } = useAuth();
-
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-
-//         {/* Auth */}
-//         <Route element={<AuthLayout />}>
-//           <Route path="/login" element={<LoginPage />} />
-//         </Route>
-
-//         <Route path="/" element={<RootLayout role="superAdmin" onLogout={logout} />}>
-//           <Route index element={<SuperAdminDashboard />} />
-//           <Route path="users/management" element={<div className="p-4 text-xl">Management</div>} />
-//           <Route path="users/service-provider" element={<div className="p-4 text-xl">Service Provider</div>} />
-//           <Route path="users/building-owners" element={<div className="p-4 text-xl">Building Owners</div>} />
-//           <Route path="services" element={<div className="p-4 text-xl">Services</div>} />
-//           <Route path="tickets" element={<div className="p-4 text-xl">Tickets</div>} />
-//           <Route path="cities/countries" element={<div className="p-4 text-xl">Countries</div>} />
-//           <Route path="cities/cities" element={<div className="p-4 text-xl">Cities</div>} />
-//           <Route path="cities/zones" element={<div className="p-4 text-xl">Zones</div>} />
-//           <Route path="categories" element={<div className="p-4 text-xl">Categories</div>} />
-//           <Route path="issues" element={<div className="p-4 text-xl">Issues</div>} />
-//           <Route path="disputes" element={<div className="p-4 text-xl">Disputes</div>} />
-//           <Route path="settings" element={<div className="p-4 text-xl">Settings</div>} />
-//         </Route>
-
-//         <Route path="/sp" element={<RootLayout role="serviceProvider" onLogout={logout} />}>
-//           <Route index element={<SpDashboard />} />
-//           <Route path="users" element={<div className="p-4 text-xl">SP Users</div>} />
-//           <Route path="services" element={<div className="p-4 text-xl">SP Services</div>} />
-//           <Route path="requests" element={<div className="p-4 text-xl">SP Requests</div>} />
-//           <Route path="reporting" element={<div className="p-4 text-xl">SP Reporting</div>} />
-//           <Route path="disputes" element={<div className="p-4 text-xl">SP Disputes</div>} />
-//           <Route path="support" element={<div className="p-4 text-xl">SP Support</div>} />
-//           <Route path="settings" element={<div className="p-4 text-xl">SP Settings</div>} />
-//         </Route>
-
-//         {/* ✅ Building Owner — بدون Protection مؤقتاً */}
-//         <Route path="/bo" element={<RootLayout role="buildingOwner" onLogout={logout} />}>
-//           <Route index element={<BoDashboard />} />
-//           <Route path="users" element={<div className="p-4 text-xl">BO Users</div>} />
-//           <Route path="services" element={<div className="p-4 text-xl">BO Services</div>} />
-//           <Route path="requests" element={<div className="p-4 text-xl">BO Requests</div>} />
-//           <Route path="reporting" element={<div className="p-4 text-xl">BO Reporting</div>} />
-//           <Route path="disputes" element={<div className="p-4 text-xl">BO Disputes</div>} />
-//           <Route path="support" element={<div className="p-4 text-xl">BO Support</div>} />
-//           <Route path="settings" element={<div className="p-4 text-xl">BO Settings</div>} />
-//         </Route>
-
-//         <Route path="*" element={<Navigate to="/" replace />} />
-
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// };
-
-// export default AppRouter;
-
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { RootLayout } from "../layouts/RootLayout";
@@ -79,6 +10,8 @@ import AdminForgot from "../pages/superAdmin/Auth/AdminForgot";
 import AdminVerifyOtp from "../pages/superAdmin/Auth/AdminVerifyOtp";
 import AdminNewPassword from "../pages/superAdmin/Auth/AdminNewPassword";
 import Users from "../pages/superAdmin/users/index";
+import ServiceProvider from "../pages/superAdmin/serviceprovider";
+import { AddServiceProviderForm } from "../components/superadmin/serviceprovider/AddUserForm";
 
 const AppRouter = () => {
   const { logout } = useAuth();
@@ -100,7 +33,12 @@ const AppRouter = () => {
           <Route path="users/management" element={
             <Users title="User Management" />
           } />
-          <Route path="users/service-provider" element={<div className="p-4 text-xl">Service Provider</div>} />
+          <Route path="users/service-provider" element={
+            <ServiceProvider title="Service Provider"/>  
+          } />
+          <Route path="users/service-provider/add" element={
+            <AddServiceProviderForm/>  
+          } />
           <Route path="users/building-owners" element={<div className="p-4 text-xl">Building Owners</div>} />
           <Route path="services" element={<div className="p-4 text-xl">Services</div>} />
           <Route path="tickets" element={<div className="p-4 text-xl">Tickets</div>} />
