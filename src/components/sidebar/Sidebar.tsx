@@ -1,95 +1,58 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
-// ─── Icons (inline SVG to avoid dependencies) ───────────────────────────────
+import { HiOutlineHome } from "react-icons/hi2";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
+import { HiOutlineTicket } from "react-icons/hi2";
+import { HiOutlineMapPin } from "react-icons/hi2";
+import { HiOutlineSquares2X2 } from "react-icons/hi2";
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import { HiOutlineScale } from "react-icons/hi2";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
+import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
+import { HiOutlineChartBarSquare } from "react-icons/hi2";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
+import { HiChevronDown } from "react-icons/hi2";
+import { HiChevronRight } from "react-icons/hi2";
+import { HiXMark } from "react-icons/hi2";
+import { HiBars3 } from "react-icons/hi2";
 
-const HomeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-  </svg>
+const WorkSansLink = () => (
+  <link
+    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 );
-const UsersIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
-  </svg>
-);
-const ServicesIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z" />
-  </svg>
-);
-const CloseIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-  </svg>
-);
-const TicketsIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M22 10V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-2-3.46V6h16v2.54z" />
-  </svg>
-);
-const LocationIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-  </svg>
-);
-const CategoriesIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2l-5.5 9h11z" />
-    <circle cx="17.5" cy="17.5" r="4.5" />
-    <rect x="3" y="13" width="8" height="8" />
-  </svg>
-);
-const IssuesIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-  </svg>
-);
-const DisputesIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14H5v-2h7v2zm7-4H5v-2h14v2zm0-4H5V7h14v2z" />
-  </svg>
-);
-const SettingsIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
-  </svg>
-);
-const LogoutIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-  </svg>
-);
-const RequestsIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-  </svg>
-);
-const ReportingIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-  </svg>
-);
-const SupportIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
-  </svg>
-);
-const DashboardIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
-  </svg>
-);
-const ChevronDown = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M7 10l5 5 5-5z" />
-  </svg>
-);
-const ChevronRight = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-  </svg>
-);
+
+// ─── Design tokens ───────────────────────────────────────────────────────────
+const ACTIVE_BG = "#1A2A4B";
+const ACTIVE_TEXT = "#FFFFFF";
+const IDLE_TEXT = "#1A2A4B";          // top-level default text = dark blue
+const HOVER_BG = "#F1F5F9";
+const HOVER_TEXT = "#1A2A4B";
+const SIDEBAR_BG = "#FFFFFF";
+
+// Nested link tokens
+const NESTED_IDLE_TEXT = "#FF0000";   // red when not active
+const NESTED_ACTIVE_TEXT = "#1A2A4B"; // dark blue when active
+
+const workSans: React.CSSProperties = {
+  fontFamily: "'Work Sans', sans-serif",
+  fontWeight: 600,
+  fontSize: "15px",
+  lineHeight: "150%",
+  letterSpacing: "0%",
+};
+
+const navItemFont: React.CSSProperties = {
+  fontFamily: "'Work Sans', sans-serif",
+  fontWeight: 600,
+  fontSize: "15px",
+  lineHeight: "150%",
+  letterSpacing: "0",
+};
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -109,130 +72,189 @@ type NavItem = {
 // ─── Nav Configs per role ────────────────────────────────────────────────────
 
 const superAdminNav: NavItem[] = [
-  { label: "Home", path: "/", icon: <HomeIcon /> },
+  { label: "Home", path: "/", icon: <HiOutlineHome size={20} /> },
   {
     label: "Users",
-    icon: <UsersIcon />,
+    icon: <HiOutlineUsers size={20} />,
     children: [
       { label: "Management", path: "/users/management" },
       { label: "Service Provider", path: "/users/service-provider" },
       { label: "Building Owners", path: "/users/building-owners" },
     ],
   },
-  { label: "Services", path: "/services", icon: <ServicesIcon /> },
-  { label: "Tickets", path: "/tickets", icon: <TicketsIcon /> },
+  { label: "Services", path: "/services", icon: <HiOutlineWrenchScrewdriver size={20} /> },
+  { label: "Tickets", path: "/tickets", icon: <HiOutlineTicket size={20} /> },
   {
     label: "Cities & Areas",
-    icon: <LocationIcon />,
+    icon: <HiOutlineMapPin size={20} />,
     children: [
       { label: "Countries", path: "/cities/countries" },
       { label: "Cities", path: "/cities/cities" },
       { label: "Zones", path: "/cities/zones" },
     ],
   },
-  { label: "Categories", path: "/categories", icon: <CategoriesIcon /> },
-  { label: "Issues", path: "/issues", icon: <IssuesIcon /> },
-  { label: "Disputes", path: "/disputes", icon: <DisputesIcon /> },
-  { label: "Settings", path: "/settings", icon: <SettingsIcon /> },
-  { label: "Log Out", icon: <LogoutIcon />, isLogout: true },
+  { label: "Categories", path: "/categories", icon: <HiOutlineSquares2X2 size={20} /> },
+  { label: "Issues", path: "/issues", icon: <HiOutlineExclamationCircle size={20} /> },
+  { label: "Disputes", path: "/disputes", icon: <HiOutlineScale size={20} /> },
+  { label: "Settings", path: "/settings", icon: <HiOutlineCog6Tooth size={20} /> },
+  { label: "Log Out", icon: <HiOutlineArrowRightOnRectangle size={20} />, isLogout: true },
 ];
 
 const serviceProviderNav: NavItem[] = [
-  { label: "Dashboard", path: "/sp/dashboard", icon: <DashboardIcon /> },
-  { label: "Users", path: "/sp/users", icon: <UsersIcon /> },
-  { label: "Services", path: "/sp/services", icon: <ServicesIcon /> },
-  { label: "Requests", path: "/sp/requests", icon: <RequestsIcon /> },
-  { label: "Reporting", path: "/sp/reporting", icon: <ReportingIcon /> },
-  { label: "Disputes", path: "/sp/disputes", icon: <DisputesIcon /> },
-  { label: "Support", path: "/sp/support", icon: <SupportIcon /> },
-  { label: "Settings", path: "/sp/settings", icon: <SettingsIcon /> },
-  { label: "Log Out", icon: <LogoutIcon />, isLogout: true },
+  { label: "Dashboard", path: "/sp/dashboard", icon: <HiOutlineChartBarSquare size={20} /> },
+  { label: "Users", path: "/sp/users", icon: <HiOutlineUsers size={20} /> },
+  { label: "Services", path: "/sp/services", icon: <HiOutlineWrenchScrewdriver size={20} /> },
+  { label: "Requests", path: "/sp/requests", icon: <HiOutlineClipboardDocumentList size={20} /> },
+  { label: "Reporting", path: "/sp/reporting", icon: <HiOutlineChartBarSquare size={20} /> },
+  { label: "Disputes", path: "/sp/disputes", icon: <HiOutlineScale size={20} /> },
+  { label: "Support", path: "/sp/support", icon: <HiOutlineQuestionMarkCircle size={20} /> },
+  { label: "Settings", path: "/sp/settings", icon: <HiOutlineCog6Tooth size={20} /> },
+  { label: "Log Out", icon: <HiOutlineArrowRightOnRectangle size={20} />, isLogout: true },
 ];
 
 const buildingOwnerNav: NavItem[] = [
-  { label: "Dashboard", path: "/bo/dashboard", icon: <DashboardIcon /> },
-  { label: "Users", path: "/bo/users", icon: <UsersIcon /> },
-  { label: "Services", path: "/bo/services", icon: <ServicesIcon /> },
-  { label: "Requests", path: "/bo/requests", icon: <RequestsIcon /> },
-  { label: "Reporting", path: "/bo/reporting", icon: <ReportingIcon /> },
-  { label: "Disputes", path: "/bo/disputes", icon: <DisputesIcon /> },
-  { label: "Support", path: "/bo/support", icon: <SupportIcon /> },
-  { label: "Settings", path: "/bo/settings", icon: <SettingsIcon /> },
-  { label: "Log Out", icon: <LogoutIcon />, isLogout: true },
+  { label: "Dashboard", path: "/bo/dashboard", icon: <HiOutlineChartBarSquare size={20} /> },
+  { label: "Users", path: "/bo/users", icon: <HiOutlineUsers size={20} /> },
+  { label: "Services", path: "/bo/services", icon: <HiOutlineWrenchScrewdriver size={20} /> },
+  { label: "Requests", path: "/bo/requests", icon: <HiOutlineClipboardDocumentList size={20} /> },
+  { label: "Reporting", path: "/bo/reporting", icon: <HiOutlineChartBarSquare size={20} /> },
+  { label: "Disputes", path: "/bo/disputes", icon: <HiOutlineScale size={20} /> },
+  { label: "Support", path: "/bo/support", icon: <HiOutlineQuestionMarkCircle size={20} /> },
+  { label: "Settings", path: "/bo/settings", icon: <HiOutlineCog6Tooth size={20} /> },
+  { label: "Log Out", icon: <HiOutlineArrowRightOnRectangle size={20} />, isLogout: true },
 ];
 
-// ─── Single Nav Item ─────────────────────────────────────────────────────────
+// ─── Single Nav Item ──────────────────────────────────────────────────────────
 
 const SidebarNavItem = ({
   item,
   onLogout,
-  onNavigate, // ← جديد: يُغلق الـ drawer على mobile
+  onNavigate,
 }: {
   item: NavItem;
   onLogout?: () => void;
   onNavigate?: () => void;
 }) => {
   const location = useLocation();
+
   const [open, setOpen] = useState(
-    () =>
-      item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false,
+    () => item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false,
   );
 
   const isParentActive =
     item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false;
 
+  // ── Parent with children ──
   if (item.children) {
     return (
       <div>
         <button
           onClick={() => setOpen((p) => !p)}
-          className={`
-            w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg
-            text-sm font-medium transition-all duration-200 group
-            ${
-              isParentActive
-                ? "bg-[#1B2B4B] text-white"
-                : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1B2B4B]"
+          style={{
+            ...navItemFont,
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "12px",
+            padding: "12px 16px",
+            borderRadius: "16px",
+            border: "none",
+            cursor: "pointer",
+            // Active = filled dark blue; idle = transparent with dark blue text
+            background: isParentActive ? ACTIVE_BG : "transparent",
+            color: isParentActive ? ACTIVE_TEXT : IDLE_TEXT,
+            transition: "background 0.18s, color 0.18s",
+          }}
+          onMouseEnter={(e) => {
+            if (!isParentActive) {
+              (e.currentTarget as HTMLElement).style.background = HOVER_BG;
+              (e.currentTarget as HTMLElement).style.color = HOVER_TEXT;
             }
-          `}
+          }}
+          onMouseLeave={(e) => {
+            if (!isParentActive) {
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+              (e.currentTarget as HTMLElement).style.color = IDLE_TEXT;
+            }
+          }}
         >
-          <div className="flex items-center gap-3">
-            <span
-              className={
-                isParentActive
-                  ? "text-white"
-                  : "text-[#94a3b8] group-hover:text-[#1B2B4B]"
-              }
-            >
+          <span style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {/* Icon inherits button color — always full opacity */}
+            <span style={{ display: "flex", alignItems: "center" }}>
               {item.icon}
             </span>
-            <span>{item.label}</span>
-          </div>
+            {item.label}
+          </span>
           <span
-            className={`transition-transform duration-200 ${open ? "rotate-0" : "-rotate-90"}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              transition: "transform 0.2s",
+              transform: open ? "rotate(0deg)" : "rotate(-90deg)",
+              opacity: 0.6,
+            }}
           >
-            <ChevronDown />
+            <HiChevronDown size={16} />
           </span>
         </button>
 
+        {/* Children — no left border, increased gap between items */}
         <div
-          className={`overflow-hidden transition-all duration-300 ${open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}`}
+          style={{
+            overflow: "hidden",
+            maxHeight: open ? "300px" : "0",
+            opacity: open ? 1 : 0,
+            transition: "max-height 0.28s ease, opacity 0.2s ease",
+          }}
         >
-          <div className="ml-4 mt-1 space-y-1 border-l-2 border-[#e2e8f0] pl-4">
+          <div
+            style={{
+              marginLeft: "20px",
+              marginTop: "4px",
+              paddingLeft: "12px",
+              // No border-left — removed completely
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px", // slightly increased vertical spacing
+            }}
+          >
             {item.children.map((child) => {
               const isActive = location.pathname.startsWith(child.path);
               return (
                 <NavLink
                   key={child.path}
                   to={child.path}
-                  onClick={onNavigate} // ← يُغلق الـ drawer
-                  className={`
-                    flex items-center gap-2 px-3 py-2 rounded-md text-sm
-                    transition-colors duration-150
-                    ${isActive ? "text-[#e53935] font-semibold" : "text-[#64748b] hover:text-[#1B2B4B]"}
-                  `}
+                  onClick={onNavigate}
+                  style={{
+                    ...navItemFont,
+                    fontWeight: isActive ? 700 : 500,
+                    fontSize: "14px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "9px 12px",
+                    borderRadius: "10px",
+                    textDecoration: "none",
+                    // Active = dark blue text, no background; idle = red text, no background
+                    color: isActive ? NESTED_ACTIVE_TEXT : NESTED_IDLE_TEXT,
+                    background: "transparent", // never any background for nested
+                    transition: "color 0.15s",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      // Subtle hover: slightly darken red toward a deeper shade
+                      (e.currentTarget as HTMLElement).style.color = "#CC0000";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLElement).style.color = NESTED_IDLE_TEXT;
+                    }
+                  }}
                 >
-                  <ChevronRight />
+                  {/* Chevron icon inherits link color */}
+                  <HiChevronRight size={14} style={{ opacity: 0.7 }} />
                   {child.label}
                 </NavLink>
               );
@@ -243,15 +265,36 @@ const SidebarNavItem = ({
     );
   }
 
+  // ── Logout button ──
   if (item.isLogout) {
     return (
       <button
         onClick={onLogout}
-        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg
-          text-sm font-medium text-[#64748b] hover:bg-[#fff1f0] hover:text-[#e53935]
-          transition-all duration-200 group"
+        style={{
+          ...navItemFont,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          padding: "12px 16px",
+          borderRadius: "16px",
+          border: "none",
+          cursor: "pointer",
+          background: "transparent",
+          color: IDLE_TEXT,
+          transition: "background 0.18s, color 0.18s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "#FFF1F0";
+          (e.currentTarget as HTMLElement).style.color = "#E53935";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "transparent";
+          (e.currentTarget as HTMLElement).style.color = IDLE_TEXT;
+        }}
       >
-        <span className="text-[#94a3b8] group-hover:text-[#e53935]">
+        {/* Icon inherits color */}
+        <span style={{ display: "flex", alignItems: "center" }}>
           {item.icon}
         </span>
         {item.label}
@@ -259,40 +302,50 @@ const SidebarNavItem = ({
     );
   }
 
+  // ── Regular NavLink ──
+
   return (
     <NavLink
       to={item.path!}
       end={item.path === "/" || item.path?.endsWith("/dashboard")}
-      onClick={onNavigate} // ← يُغلق الـ drawer
-      className={({ isActive }) => `
-        flex items-center gap-3 px-4 py-3 rounded-lg
-        text-sm font-medium transition-all duration-200 group
-        ${
-          isActive
-            ? "bg-[#1B2B4B] text-white"
-            : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1B2B4B]"
+      onClick={onNavigate}
+      className={({ isActive }) => isActive ? "nav-active" : ""}
+      style={({ isActive }) => ({
+        ...navItemFont,
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        padding: "12px 16px",
+        borderRadius: "16px",
+        textDecoration: "none",
+        background: isActive ? ACTIVE_BG : "transparent",
+        color: isActive ? ACTIVE_TEXT : IDLE_TEXT,
+        transition: "background 0.18s, color 0.18s",
+      })}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        if (!el.classList.contains("nav-active")) {
+          el.style.background = HOVER_BG;
+          el.style.color = HOVER_TEXT;
         }
-      `}
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        if (!el.classList.contains("nav-active")) {
+          el.style.background = "transparent";
+          el.style.color = IDLE_TEXT;
+        }
+      }}
     >
-      {({ isActive }) => (
-        <>
-          <span
-            className={
-              isActive
-                ? "text-white"
-                : "text-[#94a3b8] group-hover:text-[#1B2B4B]"
-            }
-          >
-            {item.icon}
-          </span>
-          {item.label}
-        </>
-      )}
+      <span style={{ display: "flex", alignItems: "center" }}>
+        {item.icon}
+      </span>
+      {item.label}
     </NavLink>
   );
 };
 
-// ─── Main Sidebar Component ───────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 type SidebarRole = "superAdmin" | "serviceProvider" | "buildingOwner";
 
@@ -301,7 +354,7 @@ interface SidebarProps {
   onLogout?: () => void;
   companyName?: string;
   logoSrc?: string;
-   isOpen: boolean;
+  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -311,6 +364,7 @@ const navByRole: Record<SidebarRole, NavItem[]> = {
   buildingOwner: buildingOwnerNav,
 };
 
+// ─── Main Sidebar ─────────────────────────────────────────────────────────────
 
 export const Sidebar = ({
   role = "superAdmin",
@@ -322,67 +376,115 @@ export const Sidebar = ({
 }: SidebarProps) => {
   const navItems = navByRole[role];
 
-  // إغلاق الـ drawer لما يتضغط Escape
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  // منع scroll الـ body لما الـ drawer مفتوح على mobile
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   const sidebarContent = (
-    <aside className="w-[240px] h-full bg-white border-r border-[#e2e8f0] flex flex-col overflow-hidden flex-shrink-0">
-      {/* ── Logo ── */}
-      <div className="px-5 py-5 border-b border-[#e2e8f0] flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <aside
+      style={{
+        width: "260px",
+        height: "100%",
+        background: SIDEBAR_BG,
+        // No border-right — removed per spec
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        flexShrink: 0,
+      }}
+    >
+      {/* ── Logo — no bottom border ── */}
+      <div
+        style={{
+          padding: "20px 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           {logoSrc ? (
-            <img src={logoSrc} alt="logo" className="h-10 w-auto" />
+            <img src={logoSrc} alt="logo" style={{ height: "40px", width: "auto" }} />
           ) : (
-            <div className="flex items-center gap-2">
-              <svg width="48" height="36" viewBox="0 0 48 36" fill="none">
-                <path d="M6 28 C6 28, 14 8, 22 18 C26 24, 30 12, 38 6"
-                  stroke="#1B2B4B" strokeWidth="3" strokeLinecap="round" fill="none" />
-                <circle cx="8" cy="28" r="3" fill="#1B2B4B" />
+            <>
+              <svg width="40" height="30" viewBox="0 0 48 36" fill="none">
+                <path
+                  d="M6 28 C6 28, 14 8, 22 18 C26 24, 30 12, 38 6"
+                  stroke={ACTIVE_BG} strokeWidth="3" strokeLinecap="round" fill="none"
+                />
+                <circle cx="8" cy="28" r="3" fill={ACTIVE_BG} />
               </svg>
-              <span className="text-[#1B2B4B] font-bold text-sm tracking-widest uppercase">
+              <span
+                style={{
+                  ...workSans,
+                  fontWeight: 700,
+                  fontSize: "13px",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  color: ACTIVE_BG,
+                }}
+              >
                 {companyName}
               </span>
-            </div>
+            </>
           )}
         </div>
 
-        {/* زر الإغلاق — يظهر فقط على mobile */}
+        {/* Mobile close */}
         <button
           onClick={onClose}
-          className="lg:hidden p-1.5 rounded-md text-[#94a3b8] hover:text-[#1B2B4B] hover:bg-[#f1f5f9] transition-colors"
+          className="lg:hidden"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "6px",
+            borderRadius: "8px",
+            color: "#94a3b8",
+            display: "flex",
+            alignItems: "center",
+          }}
           aria-label="Close sidebar"
         >
-          <CloseIcon />
+          <HiXMark size={20} />
         </button>
       </div>
 
       {/* ── Navigation ── */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+      <nav
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "12px 10px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "2px",
+        }}
+      >
         {navItems.map((item, index) => {
           const isLast = index === navItems.length - 1;
           return (
             <div key={item.label}>
-              {isLast && <div className="border-t border-[#e2e8f0] my-3" />}
+              {/* Subtle divider before logout — kept as a faint line, no full border */}
+              {isLast && (
+                <div
+                  style={{
+                    borderTop: "1px solid #F1F5F9",
+                    margin: "10px 6px",
+                  }}
+                />
+              )}
               <SidebarNavItem
                 item={item}
                 onLogout={onLogout}
-                onNavigate={onClose}    // ← يُغلق الـ drawer عند الانتقال
+                onNavigate={onClose}
               />
             </div>
           );
@@ -393,30 +495,39 @@ export const Sidebar = ({
 
   return (
     <>
-      {/* ── Desktop: ثابتة ── */}
-      <div className="hidden lg:block h-screen">
+      <WorkSansLink />
+
+      {/* Desktop */}
+      <div className="hidden lg:block" style={{ height: "100vh" }}>
         {sidebarContent}
       </div>
 
-      {/* ── Mobile/Tablet: Drawer ── */}
-      {/* Overlay */}
+      {/* Mobile overlay */}
       <div
         onClick={onClose}
-        className={`
-          lg:hidden fixed inset-0 bg-black/40 z-40
-          transition-opacity duration-300
-          ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
-        `}
+        className="lg:hidden"
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.4)",
+          zIndex: 40,
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? "auto" : "none",
+          transition: "opacity 0.3s",
+        }}
         aria-hidden="true"
       />
-
-      {/* Drawer */}
       <div
-        className={`
-          lg:hidden fixed top-0 left-0 h-full z-50
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
+        className="lg:hidden"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          height: "100%",
+          zIndex: 50,
+          transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.3s ease-in-out",
+        }}
       >
         {sidebarContent}
       </div>
@@ -424,76 +535,73 @@ export const Sidebar = ({
   );
 };
 
+// ─── Root Layout ──────────────────────────────────────────────────────────────
 
+import { Outlet } from "react-router-dom";
 
 export const RootLayout = ({
   role = "superAdmin",
   onLogout,
-  children,
 }: {
   role?: SidebarRole;
   onLogout?: () => void;
-  children?: React.ReactNode; // replace with <Outlet /> in real usage
 }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="flex h-screen bg-[#f1f4f7] overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar role={role} onLogout={onLogout} />
+    <div style={{ display: "flex", height: "100vh", background: "#F1F4F7", overflow: "hidden" }}>
+      <WorkSansLink />
 
-      {/* Main area */}
-      <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Navbar */}
-        <header className="h-[60px] bg-white border-b border-[#e2e8f0] flex items-center justify-between px-6 flex-shrink-0">
-          {/* Left: Breadcrumb placeholder */}
-          <div className="text-sm text-[#94a3b8]">Dashboard / Home</div>
+      <Sidebar
+        role={role}
+        onLogout={onLogout}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
 
-          {/* Right: User + Lang */}
-          <div className="flex items-center gap-4">
-            {/* Lang toggle */}
-            <button className="flex items-center gap-1 px-3 py-1.5 rounded-md border border-[#e2e8f0] text-sm text-[#1B2B4B] hover:bg-[#f8fafc]">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="text-[#1B2B4B]"
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-              </svg>
-              Ar
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M7 10l5 5 5-5z" />
-              </svg>
-            </button>
+      <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: "hidden" }}>
+        <header
+          style={{
+            height: "60px",
+            background: "#fff",
+            borderBottom: "1px solid #F1F5F9",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 24px",
+            flexShrink: 0,
+          }}
+        >
+          <button
+            className="lg:hidden"
+            onClick={() => setIsSidebarOpen(true)}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              color: ACTIVE_BG,
+            }}
+            aria-label="Open sidebar"
+          >
+            <HiBars3 size={24} />
+          </button>
 
-            {/* User avatar */}
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-full bg-[#1B2B4B] flex items-center justify-center text-white text-sm font-semibold">
-                A
-              </div>
-              <div className="hidden md:block">
-                <p className="text-sm font-medium text-[#1B2B4B]">
-                  Ahmed Mohamed
-                </p>
-                <p className="text-xs text-[#94a3b8]">Admin</p>
-              </div>
-            </div>
-          </div>
+          <span
+            style={{
+              ...workSans,
+              fontWeight: 500,
+              fontSize: "13px",
+              color: "#94a3b8",
+            }}
+          >
+            Dashboard / Home
+          </span>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-6">
-          {children ?? (
-            <div className="text-[#94a3b8] text-sm">
-              {/* React Router: replace this with <Outlet /> */}
-              Page content goes here
-            </div>
-          )}
+        <main style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+          <Outlet />
         </main>
       </div>
     </div>
