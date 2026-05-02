@@ -94,8 +94,8 @@ const AppRouter = () => {
         </Route>
 
 
-        <Route path="/" element={<RootLayout role="superAdmin" onLogout={logout} />}>
-          <Route index element={<SuperAdminDashboard />} />
+        <Route path="/admin" element={<RootLayout role="superAdmin" onLogout={logout} />}>
+          <Route index element={<SuperAdminDashboard  title="Dashboard"/>} />
           <Route path="users/management" element={<div className="p-4 text-xl">Management</div>} />
           <Route path="users/service-provider" element={<div className="p-4 text-xl">Service Provider</div>} />
           <Route path="users/building-owners" element={<div className="p-4 text-xl">Building Owners</div>} />

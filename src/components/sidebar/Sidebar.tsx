@@ -21,7 +21,7 @@ import { HiBars3 } from "react-icons/hi2";
 
 const WorkSansLink = () => (
   <link
-    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet"
   />
 );
@@ -72,31 +72,31 @@ type NavItem = {
 // ─── Nav Configs per role ────────────────────────────────────────────────────
 
 const superAdminNav: NavItem[] = [
-  { label: "Home", path: "/", icon: <HiOutlineHome size={20} /> },
+  { label: "Home", path: "/admin", icon: <HiOutlineHome size={20} /> },
   {
     label: "Users",
     icon: <HiOutlineUsers size={20} />,
     children: [
-      { label: "Management", path: "/users/management" },
-      { label: "Service Provider", path: "/users/service-provider" },
-      { label: "Building Owners", path: "/users/building-owners" },
+      { label: "Management", path: "/admin/users/management" },
+      { label: "Service Provider", path: "/admin/users/service-provider" },
+      { label: "Building Owners", path: "/admin/users/building-owners" },
     ],
   },
-  { label: "Services", path: "/services", icon: <HiOutlineWrenchScrewdriver size={20} /> },
-  { label: "Tickets", path: "/tickets", icon: <HiOutlineTicket size={20} /> },
+  { label: "Services", path: "/admin/services", icon: <HiOutlineWrenchScrewdriver size={20} /> },
+  { label: "Tickets", path: "/admin/tickets", icon: <HiOutlineTicket size={20} /> },
   {
     label: "Cities & Areas",
     icon: <HiOutlineMapPin size={20} />,
     children: [
-      { label: "Countries", path: "/cities/countries" },
-      { label: "Cities", path: "/cities/cities" },
-      { label: "Zones", path: "/cities/zones" },
+      { label: "Countries", path: "/admin/cities/countries" },
+      { label: "Cities", path: "/admin/cities/cities" },
+      { label: "Zones", path: "/admin/cities/zones" },
     ],
   },
-  { label: "Categories", path: "/categories", icon: <HiOutlineSquares2X2 size={20} /> },
-  { label: "Issues", path: "/issues", icon: <HiOutlineExclamationCircle size={20} /> },
-  { label: "Disputes", path: "/disputes", icon: <HiOutlineScale size={20} /> },
-  { label: "Settings", path: "/settings", icon: <HiOutlineCog6Tooth size={20} /> },
+  { label: "Categories", path: "/admin/categories", icon: <HiOutlineSquares2X2 size={20} /> },
+  { label: "Issues", path: "/admin/issues", icon: <HiOutlineExclamationCircle size={20} /> },
+  { label: "Disputes", path: "/admin/disputes", icon: <HiOutlineScale size={20} /> },
+  { label: "Settings", path: "/admin/settings", icon: <HiOutlineCog6Tooth size={20} /> },
   { label: "Log Out", icon: <HiOutlineArrowRightOnRectangle size={20} />, isLogout: true },
 ];
 

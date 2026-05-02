@@ -1,15 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
-@tailwind base;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+*{
+    font-family: "Inter", sans-serif !important;
+
+}
   body {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Inter", sans-serif !important;
+
   }
 
 /* Shared */
 .page-title {
-  font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 40px;
   line-height: 100%;
@@ -18,10 +21,6 @@
   margin-bottom: 12px;
 }
 
-/* Font */
-.montserrat {
-  font-family: "Montserrat", sans-serif;
-}
 
 /* Page Wrapper */
 .auth-container {
@@ -133,8 +132,6 @@
   color: #D0D5DD;
   font-size: 48px;
   font-weight: 600;
-  font-family: "Almarai", sans-serif;
-
   text-align: center; /* مهم */
 }
 /* Buttons layout */
@@ -162,15 +159,10 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  font-family: "Almarai", sans-serif;
 
-  leading-trim: NONE;
-}
 
 /* Shared */
 .page-title {
-  font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 40px;
   line-height: 100%;
@@ -179,10 +171,7 @@
   margin-bottom: 12px;
 }
 
-/* Font */
-.montserrat {
-  font-family: "Montserrat", sans-serif;
-}
+
 
 /* Page Wrapper */
 .auth-container {
@@ -294,7 +283,7 @@
   color: #D0D5DD;
   font-size: 48px;
   font-weight: 600;
-  font-family: "Almarai", sans-serif;
+  font-family: "Inter", sans-serif;
 
   text-align: center; /* مهم */
 }
@@ -319,3 +308,12 @@
   text-decoration: underline;
 }
 /* OTP */
+
+/* Dashboard */
+.dashboard-card {
+  background: var(--background-paper, #FFFFFF);
+
+
+  border-radius: 16px;
+}
+/* Dashboard */

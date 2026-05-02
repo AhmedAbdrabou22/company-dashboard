@@ -19,7 +19,7 @@ const AdminLogin = () => {
     const handleSubmit = async (values: AdminLoginValues) => {
         console.log("Login values:", values);
         await new Promise((r) => setTimeout(r, 800));
-        navigate("/");
+        navigate("/admin");
     };
 
     return (
