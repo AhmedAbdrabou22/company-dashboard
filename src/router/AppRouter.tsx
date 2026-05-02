@@ -14,6 +14,8 @@ import ServiceProvider from "../pages/superAdmin/serviceprovider";
 import { AddServiceProviderForm } from "../components/superadmin/serviceprovider/AddUserForm";
 import Owners from "../pages/superAdmin/owners";
 import Services from "../pages/superAdmin/services";
+import Tickets from "../pages/superAdmin/tickets";
+import Issues from "../pages/superAdmin/issues";
 
 const AppRouter = () => {
   const { logout } = useAuth();
@@ -43,12 +45,12 @@ const AppRouter = () => {
           } />
           <Route path="users/building-owners" element={<Owners title="Building Owners"/>} />
           <Route path="services" element={<Services title="Services"/>} />
-          <Route path="tickets" element={<div className="p-4 text-xl">Tickets</div>} />
+          <Route path="tickets" element={<Tickets title="Tickets"/>} />
           <Route path="cities/countries" element={<div className="p-4 text-xl">Countries</div>} />
           <Route path="cities/cities" element={<div className="p-4 text-xl">Cities</div>} />
           <Route path="cities/zones" element={<div className="p-4 text-xl">Zones</div>} />
           <Route path="categories" element={<div className="p-4 text-xl">Categories</div>} />
-          <Route path="issues" element={<div className="p-4 text-xl">Issues</div>} />
+          <Route path="issues" element={<Issues title="Issues"/>} />
           <Route path="disputes" element={<div className="p-4 text-xl">Disputes</div>} />
           <Route path="settings" element={<div className="p-4 text-xl">Settings</div>} />
         </Route>

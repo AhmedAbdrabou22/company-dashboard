@@ -52,6 +52,8 @@
 // };
 
 // BaseInput.tsx
+
+
 import { useField } from "formik";
 
 type BaseInput_TP = {
@@ -75,8 +77,8 @@ export const BaseInput = ({
     const hasError = meta.touched && meta.error;
 
     return (
-        <div className={`flex items-start gap-4 ${className}`}>
-            <label className="text-sm font-medium text-gray-700 w-36 shrink-0 pt-2.5">
+        <div className={`flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 ${className}`}>
+            <label className="text-sm font-medium text-gray-700 sm:w-36 sm:shrink-0 sm:pt-2.5">
                 {label}
                 {required && <span className="text-red-500 ml-0.5">*</span>}
             </label>
