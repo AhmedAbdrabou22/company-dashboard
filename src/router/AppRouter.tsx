@@ -16,6 +16,7 @@ import Owners from "../pages/superAdmin/owners";
 import Services from "../pages/superAdmin/services";
 import Tickets from "../pages/superAdmin/tickets";
 import Issues from "../pages/superAdmin/issues";
+import TicketDetails from "../components/superadmin/tickets/TicketDetails";
 
 const AppRouter = () => {
   const { logout } = useAuth();
@@ -46,6 +47,7 @@ const AppRouter = () => {
           <Route path="users/building-owners" element={<Owners title="Building Owners"/>} />
           <Route path="services" element={<Services title="Services"/>} />
           <Route path="tickets" element={<Tickets title="Tickets"/>} />
+          <Route path="tickets/:id" element={<TicketDetails title="Tickets Details"/>} />
           <Route path="cities/countries" element={<div className="p-4 text-xl">Countries</div>} />
           <Route path="cities/cities" element={<div className="p-4 text-xl">Cities</div>} />
           <Route path="cities/zones" element={<div className="p-4 text-xl">Zones</div>} />

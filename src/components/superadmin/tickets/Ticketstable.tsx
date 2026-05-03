@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -106,9 +107,9 @@ export const TicketsTable = ({
     onRemoveFilter,
     onMoreFilters,
     onSearch,
-    onView,
     pageSize = 5,
 }: TicketsTableProps) => {
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState("")
 
@@ -293,8 +294,11 @@ export const TicketsTable = ({
                                     {/* View */}
                                     <td className="px-5 py-4 text-right">
                                         <button
-                                            onClick={() => onView?.(ticket)}
-                                            className="text-[#1B2B4B] font-medium text-sm hover:text-[#243860] hover:underline underline-offset-2 transition-colors"
+                                           onClick={()=>{
+                                            navigate(`/admin/tickets/${ticket.id}`)
+                                           }}
+
+                                            className="text-[#0086C9]"
                                         >
                                             View
                                         </button>
